@@ -33,7 +33,7 @@ class MovieInfoRepositoryIntgTest {
 
     @AfterEach
     void tearDown() {
-        movieInfoRepository.deleteAll();
+        movieInfoRepository.deleteAll().block();
     }
 
     @Test
@@ -89,4 +89,16 @@ class MovieInfoRepositoryIntgTest {
 
                 .verifyComplete();
     }
+
+    @Test
+    void findByYear() {
+
+        var moviesInfoFlux =  movieInfoRepository.findByYear(2005).log();
+
+        StepVerifier.create(moviesInfoFlux)
+                .expectNextCount(1)
+                .verifyComplete();
+    }
+
+
 }
